@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .appointment-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .appointment-item {
+            flex: 1 1 calc(33.33% - 15px);
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            position: relative;
+        }
+        .appointment-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .appointment-item input, .appointment-item textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+        }
+        .appointment-item textarea {
+            height: 80px;
+            resize: none;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .btn-container button {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-container button:hover {
+            background-color: #c9302c;
+        }
+        .appointment-item input[readonly], .appointment-item textarea[readonly] {
+            background-color: #eee;
+            color: #666;
+        }
+        .appointment-item .delete-form {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+        }
+        .appointment-item .delete-form button {
+            background-color: #d9534f;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .appointment-item .delete-form button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Appointment Data</h1>
+        <h2>All Appointments:</h2>
+            {% csrf_token %}
+            <div class="appointment-list">
+                {% for item in data %}
+
+        <form method="GET" action="./update">
+                    <div class="appointment-item">
+                        <input type="hidden" name="appointment_id" value="{{ item.id }}">
+
+                        <label for="fname_{{ item.id }}">First Name:</label>
+                        <input type="text" id="fname_{{ item.id }}" name="fname" value="{{ item.fname }}" placeholder="First Name" readonly>
+
+                        <label for="email_{{ item.id }}">Email:</label>
+                        <input type="email" id="email_{{ item.id }}" name="email_{{ item.id }}" value="{{ item.email }}" placeholder="Email" readonly>
+
+                        <label for="mobi_{{ item.id }}">Mobile:</label>
+                        <input type="text" id="mobi_{{ item.id }}" name="mobi" value="{{ item.mobi }}" placeholder="Mobile" readonly>
+
+                        <label for="doct_{{ item.id }}">Doctor:</label>
+                        <input type="text" id="doct_{{ item.id }}" name="doct_{{ item.id }}" value="{{ item.doct }}" placeholder="Doctor" readonly>
+
+                        <label for="choosedate_{{ item.id }}">Date:</label>
+                        <input type="text" id="choosedate_{{ item.id }}" name="choosedate_{{ item.id }}" value="{{ item.choosedate }}" placeholder="Date" readonly>
+
+                        <label for="choosetime_{{ item.id }}">Time:</label>
+                        <input type="text" id="choosetime_{{ item.id }}" name="choosetime_{{ item.id }}" value="{{ item.choosetime }}" placeholder="Time" readonly>
+
+                        <label for="textar_{{ item.id }}">Description:</label>
+                        <textarea id="textar_{{ item.id }}" name="textar_{{ item.id }}" placeholder="Additional Details" readonly>{{ item.textar }}</textarea>
+
+                        <div class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" name="delete" >Delete</button>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div>No appointments found.</div>
+            </form>
+                {% endfor %}
+            </div>
+
+    </div>
+</body>
+</html>
